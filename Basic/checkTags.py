@@ -1,13 +1,6 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Nov  8 16:53:39 2021
-
-@author: arvid2
-"""
 import numpy as np
 
-def check_tags(data, total_time, threshold_time, threshold_move):
+def checkTags(data, total_time, threshold_time, threshold_move):
     # Count how many occurences of every ID
     ID_counts = data["ID"].value_counts().to_frame("count")
     ID_counts.reset_index(inplace=True)
