@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-def fill_interval(data, start_time, end_time):
+def fillMissing(data, start_time, end_time):
     data.reset_index(drop=True)
     newTimes = np.arange(start_time, end_time, 1)
     
