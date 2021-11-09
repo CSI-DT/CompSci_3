@@ -4,11 +4,6 @@ import numpy as np
 def fillMissing(ind_data, start_time, end_time):
     ind_data.reset_index(drop=True)
     newTimes = np.arange(start_time, end_time+1, 1)
-
-    # print(np.min(newTimes))
-    # print(np.min(ind_data["Time"].values))
-    # print(np.max(newTimes))
-    # print(np.max(ind_data["Time"].values))
         
     # Declare output dataframe
     filled_data = pd.DataFrame(columns = ["ID", "Time", "x", "y"])
