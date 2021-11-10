@@ -4,6 +4,7 @@ import makimaInterpolator
 
 # Fill missing data of a dataframe between start_time and end_time
 def fillMissing(ind_data, start_time, end_time):
+    # time1 = time.perf_counter()
     ind_data.reset_index(drop=True)
     newTimes = np.arange(start_time, end_time+1, 1)
 
@@ -30,10 +31,6 @@ def fillMissing(ind_data, start_time, end_time):
     filled_data.loc[:first_non_nan_x, "x"] = filled_data["x"].iloc[first_non_nan_x]
     filled_data.loc[:first_non_nan_y, "y"] = filled_data["y"].iloc[first_non_nan_y]
     
-    # # Fill nan values with makima interpolation...
-    filled_data.iloc[filled_data["x"].dropna().to_frame().index]["x"].values
-    filled_data.iloc[filled_data["y"].dropna().to_frame().index]["y"].values
-    
     # non-nan x_times, y_times, values x, values y
     nnan_times_x, nnan_times_y, vx, vy = filled_data.iloc[filled_data["x"].dropna().to_frame().index]["Time"].values, filled_data.iloc[filled_data["y"].dropna().to_frame().index]["Time"].values, filled_data.iloc[filled_data["x"].dropna().to_frame().index]["x"].values, filled_data.iloc[filled_data["y"].dropna().to_frame().index]["y"].values
    
@@ -44,11 +41,11 @@ def fillMissing(ind_data, start_time, end_time):
     nan_times_y = filled_data.loc[nan_rows_y, :]["Time"].values
         
     # Interpolate
-    vxq = makimaInterpolator.makima(nnan_times_x, vx, nan_times_x)    
-    vyq = makimaInterpolator.makima(nnan_times_y, vy, nan_times_y)    
+    # time2 = time.perf_counter()
+    filled_data.loc[nan_rows_x, 'x'] = makimaInterpolator.makima(nnan_times_x, vx, nan_times_x)    
+    filled_data.loc[nan_rows_y, 'y'] = makimaInterpolator.makima(nnan_times_y, vy, nan_times_y)    
+           
+    # end_time = time.perf_counter()
     
-    filled_data.loc[nan_rows_x, 'x'] = vxq
-    filled_data.loc[nan_rows_y, 'y'] = vyq
-    
-    
+    # print("Interpolation took ", (end_time - time2), "s or ", (end_time - time2)/(end_time - time1), " of total time.")    
     return filled_data
